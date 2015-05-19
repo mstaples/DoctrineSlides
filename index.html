@@ -120,7 +120,8 @@
             <h3>#4 Basic Interactions</h3>
             <h3>#5 Complex Queries</h3>
             <h3>#6 Custom Repositories</h3>
-            <h3>#7 Questions</h3>
+            <h3>#7 Lifecycle Events</h3>
+            <h3>#8 Questions</h3>
         </div>
     </div>
 
@@ -532,7 +533,7 @@
     <div class="slide ui-corner-all" id="slide4d.1"  style="width:100%;height:100%;">
         <div style="min-width:80%;height:100%;background-image: url('images/rainbow-elephant.png');background-repeat: no-repeat; background-position: top right;background-size: 15% auto; top:0px; left:0px; border: solid 1px white; padding-left:5%;padding-right:5%;margin-left:auto;margin-right:auto;">
 
-            <h3>Entity: Creating Structure <span class="glyphicon glyphicon-play"></span></h3><hr style="min-width:80%">
+            <h3>Entity: Creating Structure <span class="glyphicon glyphicon-pause"></span></h3><hr style="min-width:80%">
             <h3 style="margin-left:100px;color:darkblue;"><i class="fa fa-heart"></i> Describes the structure of a database table.</h3>
 
             <div class="alert" style="width:75%;margin-left:auto;margin-right:auto;padding:20px;text-align:right;">
@@ -570,7 +571,7 @@
     <div class="slide ui-corner-all" id="slide4f"  style="width:100%;height:100%;">
         <div style="min-width:80%;height:100%;background-image: url('images/rainbow-elephant.png');background-repeat: no-repeat; background-position: top right;background-size: 15% auto; top:0px; left:0px; border: solid 1px white; padding-left:5%;padding-right:5%;margin-left:auto;margin-right:auto;">
 
-            <h3>Entity: Creating Structure <span class="glyphicon glyphicon-pause"></span></h3><hr style="min-width:80%">
+            <h3>Entity: Creating Structure <span class="glyphicon glyphicon-play"></span></h3><hr style="min-width:80%">
             <h3 style="margin-left:100px;color:darkblue;"><i class="fa fa-heart"></i> Describes the structure of a database table.</h3>
             <h3 style="margin-left:100px;color:darkblue;"><i class="fa fa-heart"></i> Holds methods for interacting with data from records in that table.</h3>
 
@@ -612,7 +613,7 @@
                              *
                              * @param string $name
                              */
-                            public function setUsername($name)
+                            public function setName($name)
                             {
                                 $this->name = $name;
                             }
@@ -673,7 +674,7 @@
         <div style="min-width:80%;height:100%;top:0px; left:0px; border: solid 1px white; padding-left:5%;padding-right:5%;margin-left:auto;margin-right:auto;">
             <h3>Basic Interactions <span class="glyphicon glyphicon-play"></span></h3>
             <hr>
-            <h3>Create a New Record</h3>
+            <h3>Access the Entity Manager</h3>
 
             <div class="alert" style="width:99%;margin-left:auto;margin-right:auto;padding:20px;text-align:right;">
                 <div class="alert" style="width:100%;margin-left:auto;margin-right:auto;padding:20px;border: solid 1px limegreen;">
@@ -794,9 +795,10 @@
 
     <div class="slide ui-corner-all" id="slide7"  style="width:100%;height:100%;">
         <div style="min-width:80%;height:100%;background-image: url('images/wizard.png');background-repeat: no-repeat; background-position: top right;background-size: 25% auto; top:0px; left:0px; border: solid 1px white; padding-left:5%;padding-right:5%;margin-left:auto;margin-right:auto;">
-            <h3>Basic Interactions <span class="glyphicon glyphicon-play"></span></h3>
+            <h3>Complex Queries <span class="glyphicon glyphicon-pause"></span></h3>
             <hr>
-            <h3>Complex Queries</h3>
+            <h3>Doctrine Query Language</h3>
+            <h5>Like SQL but Different</h5>
             <div style="width:65%;">
                 Return an array of slot names for matching Item records
                 <pre class="brush: php">
@@ -806,7 +808,7 @@
 
                     $query = $em->createQueryBuilder()
                         ->select('c.slot')
-                        ->from('MyTeamMyGameBundle:Item', 'c')
+                        ->from('MyProject:Item', 'c')
                         ->where('c.name LIKE :prefer')
                         ->andWhere('c.destroyed IS NULL')
                         ->andWhere($qb->expr()->in('c.type',':types'))
@@ -826,6 +828,156 @@
         </div>
     </div>
 
+    <div class="slide ui-corner-all" id="slide8.1"  style="width:100%;height:100%;">
+        <div style="min-width:80%;height:100%;top:0px; left:0px; border: solid 1px white; padding-left:5%;padding-right:5%;margin-left:auto;margin-right:auto;">
+            <h3>Custom Repositories <span class="glyphicon glyphicon-play"></span></h3>
+            <hr>
+            <h3>Add a Custom Repository to Any Entity</h3>
+
+            <div style="width:75%;height:50%;">
+                <pre class="brush: php">
+
+                    /**
+                     * @ORM\Entity
+                     * @ORM\Table(name="character")
+                     * @ORM\Entity(repositoryClass="MyProject\Repository\CharacterRepository")
+                     */
+                    class Character
+                    {
+
+                    }
+
+                </pre>
+            </div>
+
+
+            <div style="position:relative; width:100%;text-align:center;margin-top:0px;padding-bottom:0px;top: -80px;">
+                <img src="images/elephpants.gif" style="max-height:350px;">
+            </div>
+
+        </div>
+    </div>
+
+    <div class="slide ui-corner-all" id="slide8"  style="width:100%;height:100%;">
+        <div style="min-width:80%;height:100%; top:0px; left:0px; border: solid 1px white; padding-left:5%;padding-right:5%;margin-left:auto;margin-right:auto;">
+            <h3>Custom Repositories <span class="glyphicon glyphicon-play"></span></h3>
+            <hr>
+            <h3>Create the Repository Declared in the Entity</h3>
+            <div style="width:75%;height:50%">
+                <pre class="brush: php">
+                    namespace MyProject\Repository;
+
+                    use Doctrine\ORM\EntityRepository;
+
+                    class CharacterRepository extends EntityRepository
+                    {
+                        // custom functions go here
+                    }
+                </pre>
+            </div>
+
+            <div style="position:relative; width:100%;text-align:center;margin-top:0px;padding-bottom:0px;top: -80px;">
+                <img src="images/elephpants.gif" style="max-height:350px;">
+            </div>
+        </div>
+    </div>
+
+    <div class="slide ui-corner-all" id="slide8.2"  style="width:100%;height:100%;">
+        <div style="min-width:80%;height:100%; top:0px; left:0px; border: solid 1px white; padding-left:5%;padding-right:5%;margin-left:auto;margin-right:auto;">
+            <h3>Custom Repositories <span class="glyphicon glyphicon-play"></span></h3>
+            <hr>
+            <h3>Example Function</h3>
+            <div style="width:75%;height:500px;">
+                Note: Custom Repositories have access to the Entity Manager but not to Services
+                <pre class="brush: php">
+                    public function getTopTenByClassType($type)
+                    {
+                        $em = $this->getEntityManager();
+
+                        $query = $em->createQueryBuilder()
+                            ->select('c.id')
+                            ->from('MyProject:AdventureClass', 'c')
+                            ->where('c.type = :type')
+                            ->setParameters(array('type'=>$type))
+                            ->getQuery();
+
+                        $class_ids = $query->getResult();
+
+                        $query = $em->createQueryBuilder()
+                            ->select('c')
+                            ->from('MyProject:Character', 'c')
+                            ->andWhere('c.inactive IS NULL')
+                            ->andWhere($qb->expr()->in('c.class_id',':class_ids'))
+                            ->setParameters(array('class_ids' => $class_ids))
+                            ->orderBy("c.level","DESC")
+                            ->setMaxResults(10)
+                            ->getQuery();
+
+                        return $query->getResult();
+                    }
+                </pre>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="slide ui-corner-all" id="slide8.3"  style="width:100%;height:100%;">
+        <div style="min-width:80%;height:100%; top:0px; left:0px; border: solid 1px white; padding-left:5%;padding-right:5%;margin-left:auto;margin-right:auto;">
+            <h3>Custom Repositories <span class="glyphicon glyphicon-pause"></span></h3>
+            <hr>
+            <h3>Use Your Custom Repository Function</h3>
+            <div style="width:75%;height:500px;">
+                Custom repositories can be accessed anywhere you have the Entity Manager
+                <pre class="brush: php">
+                    $type = "Ranger";
+                    $top_ten_rangers = $em->getRepository('Character')->getTopTen($type);
+                </pre>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide ui-corner-all" id="slide9"  style="width:100%;height:100%;">
+        <div style="min-width:80%;height:100%; top:0px; left:0px; border: solid 1px white; padding-left:5%;padding-right:5%;margin-left:auto;margin-right:auto;">
+            <h3>Lifecycle Events <span class="glyphicon glyphicon-play"></span></h3>
+            <hr>
+            <h3>Create Automatic Changes</h3>
+            <div style="width:75%;height:40%;">
+                <pre class="brush: php">
+                    class Character
+                    {
+                        $this->updated_on = time();
+                    }
+                </pre>
+            </div>
+
+            <div style="position:relative; width:100%;text-align:center;margin-top:0px;padding-bottom:0px;top: -80px;">
+                <img src="images/clock.gif" style="max-height:350px;">
+            </div>
+
+        </div>
+    </div>
+
+    <div class="slide ui-corner-all" id="slide9.1"  style="width:100%;height:100%;">
+        <div style="min-width:80%;height:100%; top:0px; left:0px; border: solid 1px white; padding-left:5%;padding-right:5%;margin-left:auto;margin-right:auto;">
+            <h3>Lifecycle Events <span class="glyphicon glyphicon-pause"></span></h3>
+            <hr>
+            <h3>Create Automatic Changes</h3>
+            <div style="width:75%;height:40%;">
+                <pre class="brush: php">
+                    class Character
+                    {
+                        $this->updated_on = time();
+                    }
+                </pre>
+            </div>
+
+            <div style="position:relative; width:100%;text-align:center;margin-top:0px;padding-bottom:0px;top: -80px;">
+                <img src="images/valentine-thats-all-elephant.png" style="max-height:350px;">
+            </div>
+
+        </div>
+    </div>
+
     <div class="slide ui-corner-all text-center" id="slide9a" style="background: white;width:100%;height:100%">
         <img src="images/flowery-elephant.png" style="max-height:50%;margin-top:10px;">
         <h1 style=margin-top:40px;>Questions?</h1><br/>
@@ -836,7 +988,7 @@
         <table style="width:100%">
             <tr>
                 <td>
-                    <h3 style="padding-top:14px;margin-left:5px;">Symfony: The Very Basics</h3>
+                    <h3 style="padding-top:14px;margin-left:5px;">Doctrine: What's This Then?</h3>
                 </td>
                 <td class="text-right">
                     <h3 style="padding-top:14px;margin-right:5px;">Margaret Staples</h3>
@@ -845,7 +997,7 @@
         </table>
 
         <div style="width:100%" class="text-center" style="background: white;width:100%;height:100%">
-            <h4>slides.olympicnorthwest.com</h4>
+            <h4>aesopgames.com/Doctrine</h4>
             <table style="width:80%;margin-left:215px;">
                 <tr>
                     <td style="width:50%">

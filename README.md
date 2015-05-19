@@ -1,1 +1,1 @@
-Slide deck for talk on Symfony
+Slide deck for talk on Doctrine ORM
